@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Загрузка{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row p-3">
+
+            <h5>Загрузите новый файл с расширением .csv:</h5>
+            
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %} 
+                <p></p>
+                <div class="mb-3">
+
+                    <input class="form-control" type="file" id="formFile" name="file_form" accept=".csv">
+                  </div>
+                {% if not file_form and request.method == 'POST'%}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        Необходимо выбрать файл
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> 
+                    </div>
+                {% elif file_del == True %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        Файл не соответствует таблице, выберите другой файл
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> 
+                    </div>
+                {% elif file_not_csv == True %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        Файл с неверным расширением, выберите другой файл
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> 
+                    </div>
+                {% endif %}
+                <div class="row p-1">
+                    <button type="submit" class="btn btn-dark">
+                        Подтвердить
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+        
+    <div class="container">
+        <div class="row p-3">
+            {% if all_files %}
+          
+            <h5>Или выберите уже загруженный файл:</h5>
+          
+            <table class="table table-hover table-fixed-head">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Название файла</th>
+                        <th scope="col">Ссылка</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for file in all_files %}
+                        <tr>
+                            <th scope="row">{{ file.id }}</th>
+                            <td>{{ file.name }}</td>
+                            <td><a href="/index/{{file.id}}" class="btn btn-secondary">Открыть</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            {% endif %}
+        </div>
+    </div>
+
+    <style>
+        .table-fixed-head {
+            overflow-y: auto;
+            height: 100px;
+        }
+        .table-fixed-head thead th {
+            position: sticky;
+            top: 0;
+            background-color: rgb(240, 240, 240);
+        }
+    </style>
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Просмотр файла{% endblock %}
+
+{% block content %}
+{% load thumbnail %}
+
+    <div class="container">
+        <div class="row p-3">
+            <a href="/upload" class="btn btn-dark">Загрузить новый файл</a><p></p>
+            <h5>Фильтр:</h5>
+            
+            <form action="{% url 'parser:index' file_id %}">  
+                
+                <table class="table-sm">
+                    <tbody>
+                            <tr>
+                                <td>Код<input type="text" value="{% if code %}{{ code }}{% else %}{% endif %}" name="code" class="form-control"></td>
+                                <td>Наименование<input type="text" value="{% if name %}{{ name }}{% else %}{% endif %}" name="name" class="form-control"></td>
+                                <td>Уровень1<input type="text" value="{% if level_one %}{{ level_one }}{% else %}{% endif %}" name="level_one" class="form-control"></td>
+                                <td>Уровень2<input type="text" value="{% if level_two %}{{ level_two }}{% else %}{% endif %}" name="level_two" class="form-control"></td>
+                                <td>Уровень3<input type="text" value="{% if level_three %}{{ level_three }}{% else %}{% endif %}" name="level_three" class="form-control"></td>
+                                <td>Единица измерения<input type="text" value="{% if measurement_unit %}{{ measurement_unit }}{% else %}{% endif %}" name="measurement_unit" class="form-control"></td>
+                            </tr>
+                    </tbody>
+                </table>
+
+                <div class="d-grid gap-2 col-6 mx-auto p-1">
+                    <button formmethod="get" class="btn btn-secondary" type="submit">Найти</button> 
+                </div>
+            </form>
+
+            <form method="post" action="{% url 'parser:index' file_id %}">  
+                <div class="d-grid gap-2 col-6 mx-auto p-1">
+                    <button formmethod="get" class="btn btn-secondary" type="submit">Сбросить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row m-1">
+        <table class="table table-hover table-fixed-head table-width">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Код</th>
+                    <th scope="col">Наименование</th>
+                    <th scope="col">Уровень1</th>
+                    <th scope="col">Уровень2</th>
+                    <th scope="col">Уровень3</th>
+                    <th scope="col">Цена</th>
+                    <th scope="col">ЦенаСП</th>
+                    <th scope="col">Количество</th>
+                    <th scope="col">Поля свойств</th>
+                    <th scope="col">Совместные покупки</th>
+                    <th scope="col">Единица измерения</th>
+                    <th scope="col">Картинка</th>
+                    <th scope="col">Выводить на главной</th>
+                    <th scope="col">Описание</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for row in table %}
+                    <tr>
+                        <th scope="row">{{ row.id }}</th>
+                        <td>{{ row.code }}</td>
+                        <td>{{ row.name }}</td>
+                        <td>{{ row.level_one }}</td>
+                        <td>{{ row.level_two }}</td>
+                        <td>{{ row.level_three }}</td>
+                        <td>{{ row.price }}</td>
+                        <td>{{ row.sp_price }}</td>
+                        <td>{{ row.quantity }}</td>
+                        <td>{{ row.property_fields }}</td>
+                        <td>{{ row.joint_purchases }}</td>
+                        <td>{{ row.measurement_unit }}</td>
+                        <td>
+                            {% thumbnail row.picture "80" as im %}
+                                <a href="{{ row.picture.url }}">
+                                    <img src="{{ im.url }}" class="image-detail">
+                                </a>
+                            {% endthumbnail %}
+                        </td>
+                        <td>{{ row.is_display }}</td>
+                        <td>{{ row.description }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <style>
+        .table-fixed-head {
+            overflow-y: auto;
+            height: 100px;
+        }
+        .table-fixed-head thead th {
+            position: sticky;
+            top: 0;
+            background-color: rgb(240, 240, 240);
+        }
+        .table-width {
+            table-layout: fixed;
+            word-wrap: break-word;
+        }
+    </style>
+{% endblock %}
