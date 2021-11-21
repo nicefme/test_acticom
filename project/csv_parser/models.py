@@ -23,9 +23,9 @@ class Table(models.Model):
                                  blank=True, null=True)
     level_three = models.CharField(verbose_name='Уровень3', max_length=1000,
                                    blank=True, null=True)
-    price = models.PositiveSmallIntegerField(verbose_name='Цена', blank=True,
+    price = models.IntegerField(verbose_name='Цена', blank=True,
                                              null=True)
-    sp_price = models.PositiveSmallIntegerField(verbose_name='Цена СП',
+    sp_price = models.IntegerField(verbose_name='Цена СП',
                                                 blank=True, null=True)
     quantity = models.DecimalField(verbose_name='Количество', max_digits=12,
                                    decimal_places=3, null=True,

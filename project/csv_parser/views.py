@@ -29,7 +29,7 @@ def upload_csv_file(request):
 
             with open(file_new.file.path, 'r', encoding='cp1251') as file:
                 reader = csv.reader(file)
-                print(reader)
+
                 for i, row in enumerate(reader):
                     if i == 0:
                         pass
@@ -96,6 +96,7 @@ def index(request, file_id):
         table = table.filter(level_three__icontains=level_three)
     if measurement_unit:
         table = table.filter(measurement_unit__icontains=measurement_unit)
+    table = table.order_by('id')
 
     return render(request, 'index.html', {
         'table': table,
