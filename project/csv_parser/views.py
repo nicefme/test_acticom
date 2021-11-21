@@ -27,9 +27,9 @@ def upload_csv_file(request):
                 name=file_form.name
             )
 
-            with open(file_new.file.path, 'r') as file:
+            with open(file_new.file.path, 'r', encoding='cp1251') as file:
                 reader = csv.reader(file)
-
+                print(reader)
                 for i, row in enumerate(reader):
                     if i == 0:
                         pass
